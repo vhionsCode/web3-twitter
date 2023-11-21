@@ -54,7 +54,6 @@ function Feed({personal}) {
         const account = await ethereum.request({method: "eth_accounts"});
 
         let allTweets = await TwitterContract.getAllTweets();
-        console.log(allTweets)
         setPosts(getUpdatedTweets(allTweets, account[0]));
       } else {
         console.log("Ethereum object doesn't exist");
@@ -69,7 +68,6 @@ function Feed({personal}) {
   }, []);
 
   const deleteTweet = key => async () => {
-    console.log(key);
 
     // Now we got the key, let's delete our tweet
     try {

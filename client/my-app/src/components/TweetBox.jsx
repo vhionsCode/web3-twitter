@@ -3,7 +3,6 @@ import Avatar from 'avataaars';
 import { generateRandomAvatarOptions } from './Avatar';
 import { Button } from "@material-ui/core";
 import axios from 'axios';
-//import { TwitterContractAddress } from './config.js';
 import {ethers} from 'ethers';
 import {contractAddress, abi} from '../utils/TwitterContract.js'
 
@@ -32,7 +31,6 @@ function TweetBox({getAllTweets, setLoading}) {
 
         let twitterTx = await TwitterContract.addTweet(tweet.tweetText, tweet.isDeleted);
 
-        console.log(twitterTx.confirmations);
         //await listenForTransactionMine(twitterTx, provider).then(() => {window.href("/")});
         await twitterTx.wait(1);
 

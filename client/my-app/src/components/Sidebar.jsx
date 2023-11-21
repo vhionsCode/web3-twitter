@@ -1,5 +1,4 @@
 import React from 'react';
-//import TwitterIcon from "@material-ui/icons/Twitter";
 import twtIcon from "../assets/x.svg";
 import SidebarOption from "./SidebarOption";
 import HomeIcon from "@material-ui/icons/Home";

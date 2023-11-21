@@ -15,14 +15,13 @@ function App() {
           const { ethereum } = window
     
           if (!ethereum) {
-            console.log('Metamask not detected')
+              alert("please install metamask!")
             return
           }
 
           await ethereum.request({ method : "eth_requestAccounts"});
 
           let chainId = await ethereum.request({ method: 'eth_chainId'})
-           console.log('Connected to chain:' + chainId)
     
           const sepoliaChainId = '0xaa36a7';
     
@@ -35,7 +34,6 @@ function App() {
     
           const accounts = await ethereum.request({ method: 'eth_accounts' })
     
-          console.log('Found account', accounts[0])
           setCurrentAccount(accounts[0])
         } catch (error) {
           console.log('Error connecting to metamask', error)
@@ -46,7 +44,6 @@ function App() {
       const checkCorrectNetwork = async () => {
         const { ethereum } = window
         let chainId = await ethereum.request({ method: 'eth_chainId' })
-        console.log('Connected to chain:' + chainId)
     
         const sepoliaChainId = "0xaa36a7";
     
