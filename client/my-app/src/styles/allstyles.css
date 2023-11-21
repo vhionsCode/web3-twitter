@@ -1,0 +1,39 @@
+@import './sidebar.css';
+@import './sidebaroption.css';
+@import './widgets.css';
+@import './feed.css';
+@import './post.css';
+@import './tweetbox.css';
+
+body {
+    --twitter-color: #50b7f5;
+    --twitter-background: #e6ecf0;
+  }
+  
+  .app {
+    display: flex;
+    height: 100vh;
+    min-width: 90vw;
+    margin-left: 5vw;
+    padding: 0 10px;
+  }
+
+  .error {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    justify-self: center;
+    float: center;
+    margin: auto;
+    width: 100vw;
+  }
+
+  .error button {
+    background: var(--twitter-color);
+  }
+
+  .error button:hover {
+    background: white;
+    color: var(--twitter-color);
+    border: 1px solid var(--twitter-color);
+  }
