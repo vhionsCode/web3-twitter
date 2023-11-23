@@ -4,12 +4,13 @@ import Post from "./Post";
 import FlipMove from "react-flip-move";
 import axios from 'axios';
 import {contractAddress, abi} from '../utils/TwitterContract.js';
-import {ethers} from 'ethers';
+import { ethers } from 'ethers';
 
 
 function Feed({personal}) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [connected, setConnected] = useState(false);
 
   const getUpdatedTweets = (allTweets, address) => {
     let updatedTweets = [];
@@ -38,11 +39,39 @@ function Feed({personal}) {
     return updatedTweets;
   }
 
-  const getAllTweets = async () => {
-    try {
-      const {ethereum} = window
+  // const getAllTweets = async () => {
+  //   try {
+  //     const {ethereum} = window
 
-      if(ethereum) {
+  //     if(ethereum) {
+  //       const provider = new ethers.providers.Web3Provider(ethereum);
+  //       const signer = provider.getSigner();
+  //       const TwitterContract = new ethers.Contract(
+  //         contractAddress,
+  //         abi,
+  //         signer
+  //       );
+
+  //       const account = await ethereum.request({method: "eth_accounts"});
+
+  //       let allTweets = await TwitterContract.getAllTweets();
+  //       setPosts(getUpdatedTweets(allTweets, account[0]));
+  //     } else {
+  //       console.log("Ethereum object doesn't exist");
+  //     }
+  //   } catch(error) {
+  //     console.log(error);
+  //   }
+  // }
+
+
+  const getAllTweets = async () => {
+    if (typeof window.ethereum !== "undefined") {
+        try {
+          await ethereum.request({ method: "eth_requestAccounts" })
+        } catch (error) {
+          console.log(error)
+        }  
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const TwitterContract = new ethers.Contract(
@@ -55,25 +84,53 @@ function Feed({personal}) {
 
         let allTweets = await TwitterContract.getAllTweets();
         setPosts(getUpdatedTweets(allTweets, account[0]));
+        setConnected(true);
       } else {
-        console.log("Ethereum object doesn't exist");
+        setWalletState("Please install MetaMask");
       }
-    } catch(error) {
-      console.log(error);
-    }
-  }
+}
 
   useEffect(() => {
-    getAllTweets();
+    //getAllTweets();
   }, []);
 
+  // const deleteTweet = key => async () => {
+
+  //   // Now we got the key, let's delete our tweet
+  //   try {
+  //     const {ethereum} = window
+
+  //     if(ethereum) {
+  //       const provider = new ethers.providers.Web3Provider(ethereum);
+  //       const signer = provider.getSigner();
+  //       const TwitterContract = new ethers.Contract(
+  //         contractAddress,
+  //         abi,
+  //         signer
+  //       );
+
+  //       const account = await ethereum.request({method: "eth_accounts"});
+
+  //       let deleteTweetTx = await TwitterContract.deleteTweet(key, true);
+  //       let allTweets = await TwitterContract.getAllTweets();
+  //       setPosts(getUpdatedTweets(allTweets, account[0]));
+  //     } else {
+  //       console.log("Ethereum object doesn't exist");
+  //     }
+
+  //   } catch(error) {
+  //     console.log(error);
+  //   }
+  // }
+
+
   const deleteTweet = key => async () => {
-
-    // Now we got the key, let's delete our tweet
-    try {
-      const {ethereum} = window
-
-      if(ethereum) {
+    if (typeof window.ethereum !== "undefined") {
+        try {
+          await ethereum.request({ method: "eth_requestAccounts" })
+        } catch (error) {
+          console.log(error)
+        }  
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const TwitterContract = new ethers.Contract(
@@ -88,12 +145,8 @@ function Feed({personal}) {
         let allTweets = await TwitterContract.getAllTweets();
         setPosts(getUpdatedTweets(allTweets, account[0]));
       } else {
-        console.log("Ethereum object doesn't exist");
+        setWalletState("Please install MetaMask");
       }
-
-    } catch(error) {
-      console.log(error);
-    }
   }
 
   return (
@@ -106,7 +159,7 @@ function Feed({personal}) {
 
       {loading && <div className="loading" style={{textAlign:"center",fontWeight:"800",fontStyle:"italic",padding:"10px",borderBottom:"1px solid grey"}}>...Sending Tweet</div>}
 
-      <FlipMove>
+      {connected ? <FlipMove>
         
         {posts.sort(function(a,b){return b.id-a.id}).map((post) => (<Post
             key={post.id}
@@ -115,7 +168,7 @@ function Feed({personal}) {
             personal={post.personal}
             onClick={deleteTweet(post.id)}
           />))}
-      </FlipMove>
+      </FlipMove> : <div className="connect">Connect your wallet to view posts <br /><br /> <button onClick={getAllTweets}>Connect</button></div>}
     </div>
   );
 }

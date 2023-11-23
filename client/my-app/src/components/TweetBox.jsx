@@ -11,16 +11,49 @@ function TweetBox({getAllTweets, setLoading}) {
   const [tweetImage, setTweetImage] = useState("");
   const [avatarOptions, setAvatarOptions] = useState("");
 
+  // const addTweet = async () => {
+  //   let tweet = {
+  //     'tweetText': tweetMessage,
+  //     'isDeleted': false
+  //   };
+
+  //   try {
+  //     const {ethereum} = window
+
+  //     if(ethereum) {
+  //       const provider = new ethers.providers.Web3Provider(ethereum);
+  //       const signer = provider.getSigner();
+  //       const TwitterContract = new ethers.Contract(
+  //         contractAddress,
+  //         abi,
+  //         signer
+  //       )
+
+  //       let twitterTx = await TwitterContract.addTweet(tweet.tweetText, tweet.isDeleted);
+
+  //       //await listenForTransactionMine(twitterTx, provider).then(() => {window.href("/")});
+  //       await twitterTx.wait(1);
+
+  //     } else {
+  //       console.log("Ethereum object doesn't exist!");
+  //     }
+  //   } catch(error) {
+  //     console.log("Error submitting new Tweet", error);
+  //   }
+  // }
+
   const addTweet = async () => {
     let tweet = {
       'tweetText': tweetMessage,
       'isDeleted': false
     };
 
-    try {
-      const {ethereum} = window
-
-      if(ethereum) {
+    if (typeof window.ethereum !== "undefined") {
+        try {
+          await ethereum.request({ method: "eth_requestAccounts" })
+        } catch (error) {
+          console.log("Error submitting new Tweet", error)
+        }  
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const TwitterContract = new ethers.Contract(
@@ -31,16 +64,12 @@ function TweetBox({getAllTweets, setLoading}) {
 
         let twitterTx = await TwitterContract.addTweet(tweet.tweetText, tweet.isDeleted);
 
-        //await listenForTransactionMine(twitterTx, provider).then(() => {window.href("/")});
         await twitterTx.wait(1);
-
+        
       } else {
-        console.log("Ethereum object doesn't exist!");
+        setWalletState("Please install MetaMask");
       }
-    } catch(error) {
-      console.log("Error submitting new Tweet", error);
-    }
-  }
+}
 
   const sendTweet = (e) => {
     e.preventDefault();

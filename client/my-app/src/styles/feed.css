@@ -43,3 +43,12 @@
     }
     
   }
+
+  .connect {
+    text-align: center;
+  }
+
+  .connect button {
+    background-color: var(--twitter-color);
+    color: white;
+  }

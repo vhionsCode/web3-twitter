@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script type="module">
+      import { Buffer } from "buffer";
+      import process from "process";
+      window.Buffer = Buffer;
+      window.process = process;
+    </script>
+    
+    <!-- <script data-main="scripts" src="node_modules/requirejs/require.js">
+    </script> -->
+    
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/x.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

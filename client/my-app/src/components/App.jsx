@@ -10,55 +10,108 @@ function App() {
     const [currentAccount, setCurrentAccount] = useState('as');
     const [correctNetwork, setCorrectNetwork] = useState(true);
 
-    const connectWallet = async () => {
-        try {
-          const { ethereum } = window
+    // const connectWallet = async () => {
+    //     try {
+    //       const { ethereum } = window
     
-          if (!ethereum) {
-              alert("please install metamask!")
-            return
-          }
+    //       if (!ethereum) {
+    //           alert("please install metamask!")
+    //         return
+    //       }
 
-          await ethereum.request({ method : "eth_requestAccounts"});
+    //       await ethereum.request({ method : "eth_requestAccounts"});
 
+    //       let chainId = await ethereum.request({ method: 'eth_chainId'})
+    
+    //       const sepoliaChainId = '0xaa36a7';
+    
+    //       if (chainId !== sepoliaChainId) {
+    //         alert('You are not connected to the sepolia Testnet!')
+    //         return
+    //       }
+
+          
+    
+    //       const accounts = await ethereum.request({ method: 'eth_accounts' })
+    
+    //       setCurrentAccount(accounts[0])
+    //     } catch (error) {
+    //       console.log('Error connecting to metamask', error)
+    //     }
+    //   }
+
+
+    const connectWallet = async () => {
+      if (typeof window.ethereum !== "undefined") {
+          try {
+            await ethereum.request({ method: "eth_requestAccounts" })
+          } catch (error) {
+            console.log(error)
+          }  
           let chainId = await ethereum.request({ method: 'eth_chainId'})
     
-          const sepoliaChainId = '0xaa36a7';
+           const sepoliaChainId = '0xaa36a7';
     
           if (chainId !== sepoliaChainId) {
             alert('You are not connected to the sepolia Testnet!')
             return
-          }
+           }
 
           
     
-          const accounts = await ethereum.request({ method: 'eth_accounts' })
     
+          const accounts = await ethereum.request({ method: "eth_accounts" })
           setCurrentAccount(accounts[0])
-        } catch (error) {
-          console.log('Error connecting to metamask', error)
-        }
-      }
+
+          console.log(accounts[0]);
+  
+  
+          
+        } else {
+          alert("please install metamask!")        }
+    }
     
       // Checks if wallet is connected to the correct network
+      // const checkCorrectNetwork = async () => {
+      //   const { ethereum } = window
+      //   let chainId = await ethereum.request({ method: 'eth_chainId' })
+    
+      //   const sepoliaChainId = "0xaa36a7";
+    
+      //   if (chainId !== sepoliaChainId) {
+      //     setCorrectNetwork(false)
+      //   } else {
+      //     setCorrectNetwork(true)
+      //   }
+      // }
+
+
       const checkCorrectNetwork = async () => {
-        const { ethereum } = window
-        let chainId = await ethereum.request({ method: 'eth_chainId' })
+        if (typeof window.ethereum !== "undefined") {
+            try {
+              await ethereum.request({ method: "eth_requestAccounts" })
+            } catch (error) {
+              console.log(error)
+            }  
+            let chainId = await ethereum.request({ method: 'eth_chainId' })
     
-        const sepoliaChainId = "0xaa36a7";
+            const sepoliaChainId = "0xaa36a7";
     
-        if (chainId !== sepoliaChainId) {
-          setCorrectNetwork(false)
-        } else {
-          setCorrectNetwork(true)
-        }
-      }
+           if (chainId !== sepoliaChainId) {
+             setCorrectNetwork(false)
+            } else {
+             setCorrectNetwork(true)
+             }
+          } else {
+            setWalletState("Please install MetaMask");
+          }
+    }
     
       // Similar to componentDidMount and componentDidUpdate:
       useEffect(() => {
         //connectWallet();
-        checkCorrectNetwork();
-      });
+        //checkCorrectNetwork();
+      }, []);
     
       return (
         // BEM

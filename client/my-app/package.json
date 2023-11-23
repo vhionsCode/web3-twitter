@@ -18,16 +18,26 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-flip-move": "^3.0.5",
-    "react-twitter-embed": "^4.0.4"
+    "react-twitter-embed": "^4.0.4",
+    "requirejs": "^2.3.6",
+    "vite-plugin-commonjs": "^0.10.1",
+    "vite-plugin-require": "^1.1.11"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react": "^4.2.0",
+    "browserify": "^17.0.0",
+    "buffer": "^6.0.3",
+    "empty-module": "^0.0.2",
     "eslint": "^8.53.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
-    "vite": "^5.0.0"
+    "process": "^0.11.10",
+    "rollup-plugin-polyfill-node": "^0.13.0",
+    "vite": "^5.0.0",
+    "vite-plugin-node-polyfills": "^0.16.0",
+    "vite-plugin-require-transform": "^1.0.21"
   }
 }
